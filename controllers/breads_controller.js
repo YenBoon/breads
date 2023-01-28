@@ -4,11 +4,9 @@ const Bread = require('../models/bread.js')
 
 // INDEX
 breads.get('/', (req, res) => {
-    res.render('Index',
-    {
+    res.render('index', {
       breads: Bread
-    }
-    )
+    })
   // res.send(Bread)
 })
 
@@ -19,13 +17,14 @@ breads.get('/new', (req, res) => {
 
 // // CREATE
 // breads.post('/', (req, res) => {
+//   console.log(req.body)
 //   if(req.body.hasGluten === 'on') {
 //     req.body.hasGluten = 'true'
 //   } else {
 //     req.body.hasGluten = 'false'
 //   }
 //   Bread.push(req.body)
-//   res.send(Bread)
+//   res.redirect('/breads')
 // })
 
 // CREATE
@@ -43,15 +42,15 @@ breads.post('/', (req, res) => {
 })
 
 
-
 // SHOW
 breads.get('/:arrayIndex', (req, res) => {
   if (Bread[req.params.arrayIndex]) {
     res.render('Show', {
-      bread:Bread[req.params.arrayIndex]
+      bread:Bread[req.params.arrayIndex],
+      index: req.params.arrayIndex,
     })
   } else {
-    res.send('404')
+    res.render('404')
   }
 })
 
