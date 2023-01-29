@@ -4,9 +4,14 @@ const Bread = require('../models/bread.js')
 
 // INDEX
 breads.get('/', (req, res) => {
+  Bread.find()
+  .then(foundBreads => {
     res.render('index', {
-      breads: Bread
+      breads: foundBreads,
+      title: 'Index Page'
     })
+  })
+   
   // res.send(Bread)
 })
 
@@ -14,18 +19,6 @@ breads.get('/', (req, res) => {
 breads.get('/new', (req, res) => {
   res.render('new')
 })
-
-// // CREATE
-// breads.post('/', (req, res) => {
-//   console.log(req.body)
-//   if(req.body.hasGluten === 'on') {
-//     req.body.hasGluten = 'true'
-//   } else {
-//     req.body.hasGluten = 'false'
-//   }
-//   Bread.push(req.body)
-//   res.redirect('/breads')
-// })
 
 // CREATE
 breads.post('/', (req, res) => {
@@ -41,7 +34,6 @@ breads.post('/', (req, res) => {
   res.redirect('/breads')
 })
 
-
 // SHOW
 breads.get('/:arrayIndex', (req, res) => {
   if (Bread[req.params.arrayIndex]) {
@@ -52,6 +44,25 @@ breads.get('/:arrayIndex', (req, res) => {
   } else {
     res.render('404')
   }
+})
+
+// EDIT
+breads.get('/:indexArray/edit', (req, res) => {
+  res.render('edit', {
+    bread: Bread[req.params.indexArray],
+    index: req.params.indexArray
+  })
+})
+
+// UPDATE
+breads.put('/:arrayIndex', (req, res) => {
+  if(req.body.hasGluten === 'on'){
+    req.body.hasGluten = true
+  } else {
+    req.body.hasGluten = false
+  }
+  Bread[req.params.arrayIndex] = req.body
+  res.redirect(`/breads/${req.params.arrayIndex}`)
 })
 
 // DELETE
